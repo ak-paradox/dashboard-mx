@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neon Analytics Dashboard — Interactive Mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #07080c;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(255, 87, 34, 0.05), transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(244, 63, 94, 0.03), transparent 45%),
+        radial-gradient(circle at 0% 100%, rgba(33, 36, 48, 0.5), transparent 55%);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+      overflow-x: hidden;
+    }
+
+    /* Header Nav */
+    header {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #ff5722, #f43f5e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px rgba(255, 87, 34, 0.5);
+    }
+
+    .brand-icon div {
+      width: 12px;
+      height: 12px;
+      border: 2px solid white;
+      transform: rotate(45deg);
+    }
+
+    .brand-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: #94a3b8;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button.btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      padding: 7px 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+    }
+
+    button.btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    button.btn.active {
+      background: rgba(255, 87, 34, 0.2);
+      border-color: rgba(255, 87, 34, 0.5);
+      color: #ff8a65;
+      box-shadow: 0 0 15px rgba(255, 87, 34, 0.3);
+    }
+
+    /* 3D Perspective Stage */
+    .stage {
+      perspective: 1400px;
+      perspective-origin: 50% 45%;
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: center;
+      padding: 30px 0;
+      transition: all 0.6s ease;
+    }
+
+    .stage.flat-mode {
+      perspective: none;
+      padding: 10px 0;
+    }
+
+    .dashboard-slab {
+      width: 100%;
+      max-width: 1000px;
+      background: rgba(18, 20, 26, 0.92);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 32px;
+      padding: 36px 44px;
+      transform-style: preserve-3d;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+      box-shadow: 
+        -35px 55px 95px -20px rgba(0, 0, 0, 0.95),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
+    }
+
+    .dashboard-slab.isometric {
+      transform: rotateX(42deg) rotateY(-8deg) rotateZ(22deg) scale(0.92);
+    }
+
+    .dashboard-slab.flat {
+      transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Top Row Layout */
+    .top-row {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .metric-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 140px;
+      box-shadow: 0 15px 30px -10px rgba(0,0,0,0.6), inset 0 1px 0 0 rgba(255,255,255,0.14);
+      transition: all 0.25s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .metric-card:hover {
+      background: rgba(255, 255, 255, 0.065);
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-2px);
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    .trend-pill {
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    .trend-down {
+      color: #ff5252;
+      background: rgba(255, 82, 82, 0.1);
+    }
+
+    .trend-up {
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    .metric-val {
+      font-size: 26px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    .metric-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 14px;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #ffffff;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    /* Rank Gauge (Right Side) */
+    .rank-widget {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-left: 10px;
+      border-left: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .rank-top-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #ff5252;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      margin-bottom: 6px;
+    }
+
+    .gauge-circle {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gauge-circle svg {
+      transform: rotate(-90deg);
+      width: 100%;
+      height: 100%;
+    }
+
+    .gauge-circle .readout {
+      position: absolute;
+      text-align: center;
+    }
+
+    .gauge-circle .readout .score {
+      font-size: 19px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .gauge-circle .readout .delta {
+      font-size: 10px;
+      color: #94a3b8;
+    }
+
+    .rank-labels {
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .rank-labels .title {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #ffffff;
+    }
+
+    .rank-labels .sub {
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    /* Weekly Form Section */
+    .weekly-section {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 22px;
+      margin-bottom: 22px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #e2e8f0;
+      margin-bottom: 4px;
+    }
+
+    .title-line {
+      width: 32px;
+      height: 2px;
+      background: #64748b;
+      border-radius: 2px;
+      margin-bottom: 16px;
+    }
+
+    .sparklines-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 36px;
+    }
+
+    .sparkline-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sparkline-top {
+      display: flex;
+      justify-content: flex-end;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .sparkline-bottom .trend-delta {
+      font-size: 13px;
+      font-weight: 700;
+      color: #10b981;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .sparkline-bottom .metric-name {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #ffffff;
+      margin-top: 2px;
+    }
+
+    .sparkline-bottom .metric-sub {
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    /* Mountain Chart */
+    .mountain-section {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 16px;
+      position: relative;
+    }
+
+    .mountain-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .mountain-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      letter-spacing: 0.06em;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .pill-dropdown {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+      cursor: crosshair;
+    }
+
+    .timeline-labels {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+
+    .day-marker {
+      color: #64748b;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px 5px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: inherit;
+      transition: all 0.2s;
+    }
+
+    .day-marker:hover {
+      color: #cbd5e1;
+    }
+
+    .day-marker.active {
+      background: #1e2029;
+      color: #ffffff;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 10px rgba(255, 87, 34, 0.3);
+      transform: scale(1.1);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .top-row {
+        grid-template-columns: 1fr;
+      }
+      .rank-widget {
+        border-left: none;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        padding-top: 16px;
+      }
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .sparklines-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Nav -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon"><div></div></div>
+      <div>
+        <div class="brand-title">Futuristic Analytics Dashboard</div>
+        <div class="brand-sub">Pixel-Perfect Re-creation &middot; Gemini / Antigravity</div>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="togglePerspectiveBtn" class="btn active">
+        <span>3D Mockup View</span>
+      </button>
+      <button id="audioBtn" class="btn active">
+        <span>Sound: ON</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Presentation Stage -->
+  <div id="stage" class="stage">
+    <div id="slab" class="dashboard-slab isometric">
+
+      <!-- Top Row: 4 Metric Cards + Rank Gauge -->
+      <div class="top-row">
+        <div class="cards-grid">
+          <!-- Card 1: Succeed Sales -->
+          <div class="metric-card" onclick="adjustMetric(0)">
+            <div class="card-head">
+              <div class="card-icon">&#9655;</div>
+              <div class="trend-pill trend-down">&#8600; 64%</div>
+            </div>
+            <div>
+              <div class="metric-val" id="val0">65%</div>
+              <div class="metric-label">SUCCEED SALES</div>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="fill0" style="width: 65%;"></div>
+            </div>
+          </div>
+
+          <!-- Card 2: Focus -->
+          <div class="metric-card" onclick="adjustMetric(1)">
+            <div class="card-head">
+              <div class="card-icon">&#9678;</div>
+              <div class="trend-pill trend-down">&#8600; 39%</div>
+            </div>
+            <div>
+              <div class="metric-val" id="val1">42%</div>
+              <div class="metric-label">FOCUS</div>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="fill1" style="width: 42%;"></div>
+            </div>
+          </div>
+
+          <!-- Card 3: Ratio -->
+          <div class="metric-card" onclick="adjustMetric(2)">
+            <div class="card-head">
+              <div class="card-icon">&#8635;</div>
+              <div class="trend-pill trend-up">&#8599; 1.9</div>
+            </div>
+            <div>
+              <div class="metric-val" id="val2">1,8</div>
+              <div class="metric-label">RATIO</div>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="fill2" style="width: 60%;"></div>
+            </div>
+          </div>
+
+          <!-- Card 4: Velocity -->
+          <div class="metric-card" onclick="adjustMetric(3)">
+            <div class="card-head">
+              <div class="card-icon">&#9874;</div>
+              <div class="trend-pill trend-up">&#8599; 31%</div>
+            </div>
+            <div>
+              <div class="metric-val" id="val3">29%</div>
+              <div class="metric-label">VELOCITY</div>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="fill3" style="width: 29%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rank Widget -->
+        <div class="rank-widget">
+          <div class="rank-top-badge">&#8600; 1.488 RP</div>
+          <div class="gauge-circle">
+            <svg viewBox="0 0 120 120">
+              <defs>
+                <linearGradient id="rankGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ff7043" />
+                  <stop offset="50%" stop-color="#ff3d71" />
+                  <stop offset="100%" stop-color="#d946ef" />
+                </linearGradient>
+              </defs>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="5" />
+              <circle cx="60" cy="60" r="50" fill="none" stroke="url(#rankGrad)" stroke-width="5" stroke-dasharray="314" stroke-dashoffset="80" stroke-linecap="round" />
+            </svg>
+            <div class="readout">
+              <div class="score">2.057</div>
+              <div class="delta">-7 RP</div>
+            </div>
+          </div>
+          <div class="rank-labels">
+            <div class="title">RANK POINTS</div>
+            <div class="sub">3RD IN GLOBAL RANK</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Form Section -->
+      <div class="weekly-section">
+        <div class="section-title">WEEKLY FORM</div>
+        <div class="title-line"></div>
+
+        <div class="sparklines-grid">
+          <!-- Col 1 -->
+          <div class="sparkline-col">
+            <div class="sparkline-top trend-down">&#8600; 12</div>
+            <svg viewBox="0 0 180 65" style="width:100%; height:65px; overflow:visible;">
+              <defs>
+                <linearGradient id="sp1" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#e11d48"/>
+                  <stop offset="100%" stop-color="#ff7a59"/>
+                </linearGradient>
+              </defs>
+              <path d="M 0 54 C 20 54, 15 28, 35 48 C 55 68, 50 18, 70 36 C 90 54, 85 8, 105 28 C 125 48, 120 4, 140 22 C 160 40, 165 14, 180 20" fill="none" stroke="url(#sp1)" stroke-width="2.5" stroke-linecap="round" />
+            </svg>
+            <div class="sparkline-bottom">
+              <div class="trend-delta">&#8599; 28</div>
+              <div class="metric-name">SALES TRENDS</div>
+              <div class="metric-sub">LAST WEEK 22 PTS</div>
+            </div>
+          </div>
+
+          <!-- Col 2 -->
+          <div class="sparkline-col">
+            <div class="sparkline-top trend-up">&#8599; 44%</div>
+            <svg viewBox="0 0 180 65" style="width:100%; height:65px; overflow:visible;">
+              <defs>
+                <linearGradient id="sp2" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#e11d48"/>
+                  <stop offset="100%" stop-color="#ff7a59"/>
+                </linearGradient>
+              </defs>
+              <path d="M 0 45 C 15 45, 10 18, 28 35 C 46 52, 42 22, 60 38 C 78 54, 75 14, 95 32 C 115 50, 110 8, 130 25 C 150 42, 160 12, 180 18" fill="none" stroke="url(#sp2)" stroke-width="2.5" stroke-linecap="round" />
+            </svg>
+            <div class="sparkline-bottom">
+              <div class="trend-delta">&#8599; 43%</div>
+              <div class="metric-name">FOCUS</div>
+              <div class="metric-sub">LAST WEEK 42%</div>
+            </div>
+          </div>
+
+          <!-- Col 3 -->
+          <div class="sparkline-col">
+            <div class="sparkline-top trend-down">&#8600; 12</div>
+            <svg viewBox="0 0 180 65" style="width:100%; height:65px; overflow:visible;">
+              <defs>
+                <linearGradient id="sp3" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#e11d48"/>
+                  <stop offset="100%" stop-color="#ff7a59"/>
+                </linearGradient>
+              </defs>
+              <path d="M 0 50 C 20 50, 15 32, 35 44 C 55 56, 50 12, 72 32 C 94 52, 90 20, 112 36 C 134 52, 130 8, 150 24 C 168 40, 172 16, 180 12" fill="none" stroke="url(#sp3)" stroke-width="2.5" stroke-linecap="round" />
+            </svg>
+            <div class="sparkline-bottom">
+              <div class="trend-delta">&#8599; 19</div>
+              <div class="metric-name">IN PRODUCTION</div>
+              <div class="metric-sub">LAST WEEK 22</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mountain Chart Section -->
+      <div class="mountain-section">
+        <div class="mountain-top">
+          <div class="mountain-title">TIMELINE TRAJECTORY (DAYS 08 — 30)</div>
+          <button class="pill-dropdown">Rank points &#9662;</button>
+        </div>
+
+        <div class="chart-container" id="chartContainer">
+          <svg id="mountainSvg" viewBox="0 0 900 260" style="width:100%; overflow:visible;">
+            <defs>
+              <!-- Luminous Fiery Gradient -->
+              <linearGradient id="mountainFill" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#ff7043" stop-opacity="0.85" />
+                <stop offset="25%" stop-color="#ff5722" stop-opacity="0.5" />
+                <stop offset="65%" stop-color="#d84315" stop-opacity="0.15" />
+                <stop offset="100%" stop-color="#bf360c" stop-opacity="0.0" />
+              </linearGradient>
+
+              <!-- Crest Glow -->
+              <filter id="crestGlow" x="-20%" y="-40%" width="140%" height="180%">
+                <feGaussianBlur stdDeviation="6" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
+            <!-- Coordinate Grid lines -->
+            <g opacity="0.35">
+              <line x1="40" y1="80" x2="860" y2="80" stroke="rgba(255,255,255,0.08)" stroke-width="0.75" />
+              <line x1="40" y1="130" x2="860" y2="130" stroke="rgba(255,255,255,0.08)" stroke-width="0.75" stroke-dasharray="3 3" />
+              <line x1="40" y1="180" x2="860" y2="180" stroke="rgba(255,255,255,0.08)" stroke-width="0.75" />
+              <!-- Vertical lines generated via JS -->
+              <g id="vGridGroup"></g>
+            </g>
+
+            <!-- Area Fill -->
+            <path id="mountainArea" fill="url(#mountainFill)"></path>
+
+            <!-- Crest Stroke -->
+            <path id="mountainCrest" fill="none" stroke="#ff7a59" stroke-width="3.5" stroke-linecap="round" filter="url(#crestGlow)"></path>
+
+            <!-- Active Day Vertical Line -->
+            <line id="beaconLine" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" stroke-dasharray="2 2"></line>
+
+            <!-- Concentric Beacon Halo Node -->
+            <g id="beaconNode">
+              <circle r="15" fill="rgba(255,87,34,0.35)"></circle>
+              <circle r="6" fill="#ff6e40" stroke="#ffffff" stroke-width="2"></circle>
+              <circle r="2.5" fill="#ffffff"></circle>
+            </g>
+
+            <!-- Floating Capsule Tooltip -->
+            <g id="beaconTooltip">
+              <rect x="-48" y="-13" width="96" height="26" rx="13" fill="#0d0e14" stroke="rgba(255,255,255,0.2)" stroke-width="1"></rect>
+              <text id="tooltipText" x="0" y="4" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700" font-family="'JetBrains Mono', monospace">1.954 POINTS</text>
+            </g>
+          </svg>
+
+          <!-- Timeline X-Axis Numbers (8 to 30) -->
+          <div class="timeline-labels" id="timelineLabels"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Audio synthesizer
+    let soundOn = true;
+    let audioCtx = null;
+    function playTone(freq, dur = 0.03, vol = 0.04) {
+      if (!soundOn) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + dur);
+      } catch(e) {}
+    }
+
+    // Perspective Mode Toggle
+    let is3D = true;
+    const stage = document.getElementById('stage');
+    const slab = document.getElementById('slab');
+    const toggleBtn = document.getElementById('togglePerspectiveBtn');
+    const audioBtn = document.getElementById('audioBtn');
+
+    toggleBtn.addEventListener('click', () => {
+      is3D = !is3D;
+      if (is3D) {
+        stage.classList.remove('flat-mode');
+        slab.classList.add('isometric');
+        slab.classList.remove('flat');
+        toggleBtn.classList.add('active');
+        toggleBtn.innerHTML = '<span>3D Mockup View</span>';
+      } else {
+        stage.classList.add('flat-mode');
+        slab.classList.remove('isometric');
+        slab.classList.add('flat');
+        slab.style.transform = '';
+        toggleBtn.classList.remove('active');
+        toggleBtn.innerHTML = '<span>2D Flat View</span>';
+      }
+      playTone(1050, 0.04, 0.05);
+    });
+
+    audioBtn.addEventListener('click', () => {
+      soundOn = !soundOn;
+      audioBtn.classList.toggle('active', soundOn);
+      audioBtn.innerHTML = soundOn ? '<span>Sound: ON</span>' : '<span>Sound: OFF</span>';
+      if (soundOn) playTone(1200, 0.04, 0.05);
+    });
+
+    // 3D Mouse Parallax Tilt
+    document.addEventListener('mousemove', (e) => {
+      if (!is3D) return;
+      const rect = slab.getBoundingClientRect();
+      const normX = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+      const normY = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
+      const tiltX = normY * -8;
+      const tiltY = normX * 10;
+      slab.style.transform = `rotateX(${42 + tiltX}deg) rotateY(${-8 + tiltY}deg) rotateZ(22deg) scale(0.92)`;
+    });
+
+    document.addEventListener('mouseleave', () => {
+      if (!is3D) return;
+      slab.style.transform = `rotateX(42deg) rotateY(-8deg) rotateZ(22deg) scale(0.92)`;
+    });
+
+    // Interactive Metric Cards
+    const metricVals = [65, 42, 1.8, 29];
+    function adjustMetric(idx) {
+      if (idx === 2) {
+        metricVals[2] = metricVals[2] >= 2.4 ? 1.2 : +(metricVals[2] + 0.2).toFixed(1);
+        document.getElementById('val2').textContent = metricVals[2].toString().replace('.', ',');
+        document.getElementById('fill2').style.width = ((metricVals[2] / 2.5) * 100) + '%';
+      } else {
+        metricVals[idx] = (metricVals[idx] + 8) % 100 || 10;
+        document.getElementById('val' + idx).textContent = metricVals[idx] + '%';
+        document.getElementById('fill' + idx).style.width = metricVals[idx] + '%';
+      }
+      playTone(700 + idx * 80, 0.03, 0.04);
+    }
+
+    // Mountain Chart Data & Math
+    const days = Array.from({ length: 23 }, (_, i) => i + 8);
+    const rawPoints = {
+      8: 0.12, 9: 0.16, 10: 0.22, 11: 0.30, 12: 0.42, 13: 0.62,
+      14: 0.95, 15: 1.35, 16: 1.70, 17: 1.954, 18: 1.78, 19: 1.50,
+      20: 1.22, 21: 0.98, 22: 0.82, 23: 0.74, 24: 0.72, 25: 0.78,
+      26: 0.88, 27: 1.02, 28: 1.18, 29: 1.32, 30: 1.45
+    };
+
+    const svgW = 900, svgH = 260, botPad = 40, topPad = 45, chartH = svgH - botPad - topPad;
+    const coords = days.map((day, idx) => {
+      const x = (idx / (days.length - 1)) * (svgW - 80) + 40;
+      const pts = rawPoints[day];
+      const y = svgH - botPad - (pts / 2.1) * chartH;
+      return { day, pts, x, y };
+    });
+
+    // Spline path
+    let d = `M ${coords[0].x} ${coords[0].y}`;
+    for (let i = 0; i < coords.length - 1; i++) {
+      const p0 = coords[i === 0 ? 0 : i - 1];
+      const p1 = coords[i];
+      const p2 = coords[i + 1];
+      const p3 = coords[i + 2 < coords.length ? i + 2 : i + 1];
+      const cp1x = p1.x + (p2.x - p0.x) / 3.5;
+      const cp1y = p1.y + (p2.y - p0.y) / 3.5;
+      const cp2x = p2.x - (p3.x - p1.x) / 3.5;
+      const cp2y = p2.y - (p3.y - p1.y) / 3.5;
+      d += ` C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+    }
+    const area = `${d} L ${coords[coords.length - 1].x} ${svgH - botPad + 10} L ${coords[0].x} ${svgH - botPad + 10} Z`;
+
+    document.getElementById('mountainCrest').setAttribute('d', d);
+    document.getElementById('mountainArea').setAttribute('d', area);
+
+    // Build vertical grid
+    const vGroup = document.getElementById('vGridGroup');
+    coords.forEach(c => {
+      const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      l.setAttribute('x1', c.x);
+      l.setAttribute('y1', topPad);
+      l.setAttribute('x2', c.x);
+      l.setAttribute('y2', svgH - botPad);
+      l.setAttribute('stroke', 'rgba(255,255,255,0.04)');
+      l.setAttribute('stroke-width', '0.5');
+      vGroup.appendChild(l);
+    });
+
+    // Interactive Day Selection
+    let activeDay = 17;
+    const timelineLabels = document.getElementById('timelineLabels');
+    const beaconLine = document.getElementById('beaconLine');
+    const beaconNode = document.getElementById('beaconNode');
+    const beaconTooltip = document.getElementById('beaconTooltip');
+    const tooltipText = document.getElementById('tooltipText');
+
+    function setActiveDay(day) {
+      activeDay = day;
+      const c = coords.find(pt => pt.day === day) || coords[9];
+      beaconLine.setAttribute('x1', c.x);
+      beaconLine.setAttribute('y1', c.y);
+      beaconLine.setAttribute('x2', c.x);
+      beaconLine.setAttribute('y2', svgH - botPad);
+
+      beaconNode.setAttribute('transform', `translate(${c.x}, ${c.y})`);
+      beaconTooltip.setAttribute('transform', `translate(${c.x}, ${Math.max(c.y - 30, 20)})`);
+      tooltipText.textContent = c.pts.toFixed(3) + ' POINTS';
+
+      document.querySelectorAll('.day-marker').forEach(btn => {
+        btn.classList.toggle('active', +btn.dataset.day === day);
+      });
+    }
+
+    // Populate timeline pills
+    days.forEach(day => {
+      const btn = document.createElement('button');
+      btn.className = 'day-marker' + (day === 17 ? ' active' : '');
+      btn.dataset.day = day;
+      btn.textContent = day;
+      btn.addEventListener('click', () => {
+        setActiveDay(day);
+        playTone(day === 17 ? 1200 : 850, 0.03, 0.04);
+      });
+      timelineLabels.appendChild(btn);
+    });
+
+    setActiveDay(17);
+
+    // Scrubbing on chart
+    const chartSvg = document.getElementById('mountainSvg');
+    function handleScrub(e) {
+      const rect = chartSvg.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const relX = clientX - rect.left;
+      const svgX = relX * (svgW / rect.width);
+      let closest = coords[0];
+      let minD = Infinity;
+      coords.forEach(c => {
+        const diff = Math.abs(c.x - svgX);
+        if (diff < minD) { minD = diff; closest = c; }
+      });
+      if (closest.day !== activeDay) {
+        setActiveDay(closest.day);
+        playTone(closest.day === 17 ? 1200 : 800 + closest.pts * 250, 0.02, 0.02);
+      }
+    }
+
+    let isDown = false;
+    chartSvg.addEventListener('mousedown', (e) => { isDown = true; handleScrub(e); });
+    window.addEventListener('mousemove', (e) => { if (isDown) handleScrub(e); });
+    window.addEventListener('mouseup', () => { isDown = false; });
+    chartSvg.addEventListener('touchstart', (e) => { isDown = true; handleScrub(e); });
+    window.addEventListener('touchmove', (e) => { if (isDown) handleScrub(e); });
+    window.addEventListener('touchend', () => { isDown = false; });
+  </script>
+</body>
+</html>
