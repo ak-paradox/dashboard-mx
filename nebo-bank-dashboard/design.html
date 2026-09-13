@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NEBO.Bank — Design System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root,
+      [data-theme='dark'] {
+        --bg: #121212;
+        --surface: #181818;
+        --card: #1c1c1e;
+        --raised: #222224;
+        --inset: #141414;
+        --border: #2a2a2c;
+        --text: #ffffff;
+        --text-soft: rgba(255, 255, 255, 0.9);
+        --muted: #8e8e93;
+        --faint: #636366;
+        --accent: #ff4d2d;
+        --accent-soft: #ff6b4a;
+        --neu: 8px 8px 20px rgba(0, 0, 0, 0.55), -4px -4px 12px rgba(255, 255, 255, 0.03);
+        --neu-sm: 4px 4px 12px rgba(0, 0, 0, 0.45), -2px -2px 8px rgba(255, 255, 255, 0.025);
+        --inset-sh: inset 3px 3px 8px rgba(0, 0, 0, 0.55), inset -2px -2px 6px rgba(255, 255, 255, 0.03);
+        --glow: 0 0 24px rgba(255, 77, 45, 0.35);
+        --page: radial-gradient(ellipse at 20% 0%, #1a1514 0%, #121212 45%, #0e0e0e 100%);
+        --callout: rgba(255, 77, 45, 0.12);
+        --anno: #ff4d2d;
+        color-scheme: dark;
+      }
+
+      [data-theme='light'] {
+        --bg: #e6e7ec;
+        --surface: #ececf1;
+        --card: #f2f3f7;
+        --raised: #ffffff;
+        --inset: #d8dae2;
+        --border: #c8cad3;
+        --text: #1c1c1e;
+        --text-soft: rgba(28, 28, 30, 0.88);
+        --muted: #6c6c70;
+        --faint: #8e8e93;
+        --accent: #ff4d2d;
+        --accent-soft: #e64528;
+        --neu: 10px 10px 24px rgba(163, 174, 198, 0.55), -8px -8px 20px rgba(255, 255, 255, 0.95);
+        --neu-sm: 5px 5px 14px rgba(163, 174, 198, 0.45), -4px -4px 10px rgba(255, 255, 255, 0.9);
+        --inset-sh: inset 4px 4px 10px rgba(163, 174, 198, 0.45), inset -3px -3px 8px rgba(255, 255, 255, 0.9);
+        --glow: 0 0 20px rgba(255, 77, 45, 0.28);
+        --page: radial-gradient(ellipse at 20% 0%, #f4f0ee 0%, #e6e7ec 50%, #dde0e8 100%);
+        --callout: rgba(255, 77, 45, 0.1);
+        --anno: #c43a20;
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, 'SF Pro Display', system-ui, sans-serif;
+        background: var(--page);
+        color: var(--text);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        transition: background 0.35s ease, color 0.25s ease;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 40px 24px 80px;
+      }
+
+      header.hero {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 48px;
+      }
+
+      .eyebrow {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 8px;
+      }
+
+      h1 {
+        font-size: clamp(28px, 4vw, 40px);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0 0 10px;
+      }
+
+      .lede {
+        max-width: 540px;
+        color: var(--muted);
+        margin: 0;
+        font-size: 15px;
+      }
+
+      .theme-switch {
+        display: flex;
+        gap: 4px;
+        padding: 4px;
+        border-radius: 18px;
+        background: var(--inset);
+        box-shadow: var(--inset-sh);
+      }
+
+      .theme-switch button {
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        font: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 10px 16px;
+        border-radius: 14px;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .theme-switch button[aria-pressed='true'] {
+        background: var(--raised);
+        color: var(--text);
+        box-shadow: var(--neu-sm);
+      }
+
+      nav.toc {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 40px;
+      }
+
+      nav.toc a {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--muted);
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: var(--card);
+        box-shadow: var(--neu-sm);
+        text-decoration: none;
+        transition: 0.2s ease;
+      }
+
+      nav.toc a:hover {
+        color: var(--text);
+        box-shadow: var(--glow);
+      }
+
+      section {
+        margin-bottom: 56px;
+      }
+
+      section > h2 {
+        font-size: 20px;
+        font-weight: 650;
+        letter-spacing: -0.02em;
+        margin: 0 0 8px;
+      }
+
+      section > .sec-desc {
+        color: var(--muted);
+        font-size: 14px;
+        margin: 0 0 20px;
+        max-width: 620px;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 28px;
+        box-shadow: var(--neu);
+        border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+        padding: 24px;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .grid-2 {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .grid-3 {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+
+      .swatch {
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: var(--neu-sm);
+      }
+
+      .swatch .chip {
+        height: 72px;
+      }
+
+      .swatch .meta {
+        padding: 12px 14px;
+        background: var(--card);
+      }
+
+      .swatch .meta strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .swatch .meta code {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .type-row {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 16px;
+        align-items: baseline;
+        padding: 14px 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+      }
+
+      .type-row:last-child {
+        border-bottom: 0;
+      }
+
+      .type-row .tag {
+        font-size: 11px;
+        color: var(--faint);
+        font-weight: 500;
+      }
+
+      .amount-demo {
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+      }
+
+      .amount-demo .sym {
+        color: var(--muted);
+        font-weight: 500;
+      }
+
+      .amount-demo .cents {
+        font-size: 0.55em;
+        vertical-align: super;
+      }
+
+      /* Depth playground */
+      .depth-stage {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      }
+
+      .depth-item {
+        text-align: center;
+      }
+
+      .depth-item p {
+        margin: 12px 0 0;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .raised-demo,
+      .inset-demo,
+      .glow-demo {
+        height: 96px;
+        border-radius: 22px;
+        display: grid;
+        place-items: center;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+
+      .raised-demo {
+        background: var(--card);
+        box-shadow: var(--neu);
+      }
+
+      .raised-demo:hover {
+        transform: translateY(-2px);
+      }
+
+      .raised-demo:active {
+        transform: scale(0.98);
+        box-shadow: var(--inset-sh);
+      }
+
+      .inset-demo {
+        background: var(--inset);
+        box-shadow: var(--inset-sh);
+      }
+
+      .inset-demo:hover {
+        box-shadow: var(--neu-sm);
+        background: var(--raised);
+      }
+
+      .glow-demo {
+        background: linear-gradient(135deg, #ff6b4a, #ff4d2d 55%, #e63a1c);
+        color: #fff;
+        box-shadow: var(--glow);
+      }
+
+      .glow-demo:hover {
+        filter: brightness(1.08);
+        transform: translateY(-1px);
+      }
+
+      .glow-demo:active {
+        transform: scale(0.98);
+      }
+
+      /* Interaction cards */
+      .anno-wrap {
+        position: relative;
+      }
+
+      .anno {
+        position: absolute;
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--anno);
+        background: var(--callout);
+        border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+        padding: 4px 8px;
+        border-radius: 8px;
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .anno::after {
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: 18px;
+        background: var(--accent);
+        left: 12px;
+        top: 100%;
+        opacity: 0.5;
+      }
+
+      .widget {
+        background: var(--card);
+        border-radius: 28px;
+        box-shadow: var(--neu);
+        padding: 20px;
+      }
+
+      .tile-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 8px;
+      }
+
+      .tile {
+        aspect-ratio: 1;
+        border-radius: 22px;
+        background: var(--inset);
+        box-shadow: var(--inset-sh);
+        border: 0;
+        color: var(--text);
+        font: inherit;
+        font-size: 10px;
+        font-weight: 500;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: 0.18s ease;
+      }
+
+      .tile svg {
+        width: 20px;
+        height: 20px;
+        stroke: var(--text-soft);
+        fill: none;
+        stroke-width: 1.5;
+      }
+
+      .tile:hover {
+        transform: translateY(-2px);
+      }
+
+      .tile:active,
+      .tile.is-pressed {
+        transform: scale(0.96);
+        box-shadow: var(--inset-sh);
+      }
+
+      .tile.is-active {
+        outline: 1.5px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      .progress-track {
+        height: 8px;
+        border-radius: 999px;
+        background: var(--inset);
+        box-shadow: var(--inset-sh);
+        overflow: hidden;
+        margin: 12px 0 8px;
+      }
+
+      .progress-fill {
+        height: 100%;
+        width: 64%;
+        border-radius: inherit;
+        background: linear-gradient(135deg, #ff6b4a, #ff4d2d);
+        box-shadow: 0 0 10px rgba(255, 77, 45, 0.35);
+        transition: width 0.45s ease;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .btn {
+        border: 0;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 16px;
+        border-radius: 16px;
+        cursor: pointer;
+        transition: 0.18s ease;
+      }
+
+      .btn-ghost {
+        background: var(--inset);
+        color: var(--text);
+        box-shadow: var(--inset-sh);
+      }
+
+      .btn-ghost:hover {
+        background: var(--raised);
+        box-shadow: var(--neu-sm);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #ff6b4a, #ff4d2d 55%, #e63a1c);
+        color: #fff;
+        box-shadow: var(--glow);
+      }
+
+      .btn-primary:hover {
+        filter: brightness(1.06);
+      }
+
+      .btn:active {
+        transform: scale(0.98);
+      }
+
+      .notify {
+        position: relative;
+        width: 44px;
+        height: 44px;
+        border-radius: 16px;
+        background: var(--inset);
+        box-shadow: var(--inset-sh);
+        border: 0;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+      }
+
+      .notify .dot {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 10px rgba(255, 77, 45, 0.5);
+        transition: transform 0.2s ease;
+      }
+
+      .notify:hover .dot {
+        transform: scale(1.25);
+      }
+
+      .notify.cleared .dot {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      .level {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(135deg, #ff6b4a, #ff4d2d);
+        box-shadow: var(--glow);
+        cursor: pointer;
+        transition: 0.25s ease;
+      }
+
+      .level:hover {
+        transform: scale(1.08) rotate(-6deg);
+      }
+
+      .states {
+        display: grid;
+        gap: 10px;
+      }
+
+      .state-row {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        gap: 12px;
+        align-items: center;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .mini-btn {
+        height: 40px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        font-weight: 600;
+        background: var(--inset);
+        box-shadow: var(--inset-sh);
+      }
+
+      .mini-btn.hover {
+        background: var(--raised);
+        box-shadow: var(--neu-sm);
+        transform: translateY(-1px);
+      }
+
+      .mini-btn.active {
+        outline: 1.5px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      .mini-btn.pressed {
+        transform: scale(0.97);
+      }
+
+      .mini-btn.disabled {
+        opacity: 0.4;
+      }
+
+      .principle {
+        display: grid;
+        gap: 12px;
+      }
+
+      .principle article {
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: var(--inset);
+        box-shadow: var(--inset-sh);
+      }
+
+      .principle h3 {
+        margin: 0 0 6px;
+        font-size: 14px;
+      }
+
+      .principle p {
+        margin: 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      footer {
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+        font-size: 13px;
+        color: var(--muted);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 24px;
+        justify-content: space-between;
+      }
+
+      .live-note {
+        font-size: 12px;
+        color: var(--accent-soft);
+        margin-top: 8px;
+      }
+
+      @media (max-width: 640px) {
+        .type-row {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+        .anno {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Design system</p>
+          <h1>NEBO.Bank design aspects</h1>
+          <p class="lede">
+            Interactive reference for how surfaces, type, colour, and controls are built and
+            how they respond to hover, press, and theme changes. Open the live dashboard at
+            <a href="/">/</a> after <code>npm run dev</code>.
+          </p>
+        </div>
+        <div class="theme-switch" role="group" aria-label="Theme">
+          <button type="button" id="theme-dark" aria-pressed="true">Dark</button>
+          <button type="button" id="theme-light" aria-pressed="false">Light</button>
+        </div>
+      </header>
+
+      <nav class="toc" aria-label="Sections">
+        <a href="#colour">Colour</a>
+        <a href="#type">Typography</a>
+        <a href="#depth">Depth</a>
+        <a href="#components">Components</a>
+        <a href="#states">Interaction states</a>
+        <a href="#principles">Principles</a>
+      </nav>
+
+      <section id="colour">
+        <h2>Colour tokens</h2>
+        <p class="sec-desc">
+          Accent <code>#FF4D2D</code> is constant across themes. Surfaces and text flip with
+          <code>data-theme</code>. Click a swatch to copy its hex.
+        </p>
+        <div class="grid-3" id="swatches"></div>
+      </section>
+
+      <section id="type">
+        <h2>Typography</h2>
+        <p class="sec-desc">
+          Inter geometric sans — brand title, amounts with superscript cents, and quiet labels.
+        </p>
+        <div class="card">
+          <div class="type-row">
+            <span class="tag">Brand · 22/600</span>
+            <div style="font-size: 22px; font-weight: 600; letter-spacing: -0.02em">
+              NEBO<span style="color: var(--muted)">.</span>Bank
+            </div>
+          </div>
+          <div class="type-row">
+            <span class="tag">Amount · 28/600</span>
+            <div class="amount-demo">
+              <span class="sym">$</span> 8 460<span class="cents">.94</span>
+            </div>
+          </div>
+          <div class="type-row">
+            <span class="tag">Body · 14/500</span>
+            <div style="font-size: 14px; font-weight: 500">Divide incoming payments to achieve your goals</div>
+          </div>
+          <div class="type-row">
+            <span class="tag">Label · 11/500</span>
+            <div style="font-size: 11px; font-weight: 500; color: var(--muted); letter-spacing: 0.02em">
+              Month balance · Every Sunday 11:00 AM
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="depth">
+        <h2>Depth &amp; light</h2>
+        <p class="sec-desc">
+          Soft UI uses a top-left light source. Raised cards float; tiles sink. Press raised
+          surfaces to feel them become inset.
+        </p>
+        <div class="depth-stage">
+          <div class="depth-item">
+            <div class="raised-demo" tabindex="0">Raised card</div>
+            <p>Outer neu shadow · hover lifts · press insets</p>
+          </div>
+          <div class="depth-item">
+            <div class="inset-demo" tabindex="0">Inset tile</div>
+            <p>Inner shadow · hover can raise briefly</p>
+          </div>
+          <div class="depth-item">
+            <div class="glow-demo" tabindex="0">Accent CTA</div>
+            <p>Coral gradient + glow · primary action</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="components">
+        <h2>Component anatomy &amp; interaction</h2>
+        <p class="sec-desc">
+          Live widgets from the dashboard. Annotations mark design roles; click to exercise
+          behaviour.
+        </p>
+
+        <div class="grid-2">
+          <div class="anno-wrap">
+            <span class="anno" style="top: -6px; left: 24px">1 · Brand lockup</span>
+            <span class="anno" style="top: -6px; right: 16px">2 · Notification pulse</span>
+            <div class="widget">
+              <div style="display: flex; justify-content: space-between; align-items: center">
+                <div style="font-size: 20px; font-weight: 600">
+                  NEBO<span style="color: var(--muted)">.</span>Bank
+                </div>
+                <button type="button" class="notify" id="notify-btn" aria-label="Toggle notification">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                  </svg>
+                  <span class="dot"></span>
+                </button>
+              </div>
+              <p class="live-note" id="notify-note">Unread · click bell to clear</p>
+
+              <span class="anno" style="top: 88px; left: 20px">3 · Inset action tiles</span>
+              <div class="tile-row" style="margin-top: 28px">
+                <button type="button" class="tile" data-tile>
+                  <svg viewBox="0 0 24 24"><rect x="3" y="10" width="18" height="11" rx="2" /><path d="M7 10V7a5 5 0 0 1 10 0v3" /></svg>
+                  Instant Payments
+                </button>
+                <button type="button" class="tile" data-tile>
+                  <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20" /></svg>
+                  Card reissues
+                </button>
+                <button type="button" class="tile" data-tile>
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M9 12h6M12 9v6" /></svg>
+                  Crypto exchange
+                </button>
+              </div>
+              <p class="live-note" id="tile-note">Select a tile · active = accent outline</p>
+            </div>
+          </div>
+
+          <div class="anno-wrap">
+            <span class="anno" style="top: -6px; left: 20px">4 · Level badge (glow)</span>
+            <span class="anno" style="top: 120px; left: 20px">5 · Track = inset · fill = accent</span>
+            <div class="widget">
+              <div style="display: flex; justify-content: space-between; align-items: center">
+                <div>
+                  <div style="font-size: 18px; font-weight: 600">4 860</div>
+                  <div style="font-size: 11px; color: var(--muted)">bonus points</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px">
+                  <span style="font-size: 11px; color: var(--muted)">my level</span>
+                  <button type="button" class="level" id="level-btn" aria-label="Bump level">3</button>
+                </div>
+              </div>
+
+              <div style="margin-top: 28px">
+                <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 500">
+                  <span>New car</span>
+                  <span style="color: var(--muted)" id="pct-label">64%</span>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill" id="progress"></div>
+                </div>
+                <div class="controls">
+                  <button type="button" class="btn btn-ghost" id="prog-down">− Save less</button>
+                  <button type="button" class="btn btn-primary" id="prog-up">+ Add funds</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="states">
+        <h2>Interaction state matrix</h2>
+        <p class="sec-desc">How a single control should look across states — used consistently on tiles, Next, and Ok.</p>
+        <div class="card states">
+          <div class="state-row"><span>Rest</span><div class="mini-btn">Action</div></div>
+          <div class="state-row"><span>Hover</span><div class="mini-btn hover">Action</div></div>
+          <div class="state-row"><span>Active / focus</span><div class="mini-btn active">Action</div></div>
+          <div class="state-row"><span>Pressed</span><div class="mini-btn pressed">Action</div></div>
+          <div class="state-row"><span>Disabled</span><div class="mini-btn disabled">Action</div></div>
+        </div>
+      </section>
+
+      <section id="principles">
+        <h2>Design principles</h2>
+        <div class="principle grid-2">
+          <article>
+            <h3>One accent job</h3>
+            <p>
+              Coral is reserved for progress, active chart segments, CTAs, level, and notification
+              dots — never for decorative chrome.
+            </p>
+          </article>
+          <article>
+            <h3>Depth encodes affordance</h3>
+            <p>
+              Raised = content container. Inset = tappable tile or track. Pressing a raised
+              control temporarily insets it.
+            </p>
+          </article>
+          <article>
+            <h3>Theme preserves motif</h3>
+            <p>
+              Light mode keeps radii, Inter, and accent. Only surface luminance and shadow
+              polarity change via CSS variables.
+            </p>
+          </article>
+          <article>
+            <h3>Quiet motion</h3>
+            <p>
+              Fade-up on cards, soft accent glow on motifs, chart line draw — no continuous
+              noise or stacked parallax.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <footer>
+        <span>NEBO.Bank design.html · companion to DESIGN.md</span>
+        <span>
+          <a href="/">Open dashboard</a>
+          ·
+          <a href="./DESIGN.md">Design doc</a>
+        </span>
+      </footer>
+    </div>
+
+    <script>
+      const root = document.documentElement;
+      const darkBtn = document.getElementById('theme-dark');
+      const lightBtn = document.getElementById('theme-light');
+
+      function setTheme(theme) {
+        root.setAttribute('data-theme', theme);
+        darkBtn.setAttribute('aria-pressed', String(theme === 'dark'));
+        lightBtn.setAttribute('aria-pressed', String(theme === 'light'));
+        try {
+          localStorage.setItem('nebo-theme', theme);
+        } catch (_) {}
+      }
+
+      try {
+        const stored = localStorage.getItem('nebo-theme');
+        if (stored === 'light' || stored === 'dark') setTheme(stored);
+      } catch (_) {}
+
+      darkBtn.addEventListener('click', () => setTheme('dark'));
+      lightBtn.addEventListener('click', () => setTheme('light'));
+
+      const tokenSets = {
+        dark: [
+          ['Background', '#121212', 'Page canvas'],
+          ['Card', '#1C1C1E', 'Raised surface'],
+          ['Inset', '#141414', 'Recessed tile'],
+          ['Text', '#FFFFFF', 'Primary copy'],
+          ['Muted', '#8E8E93', 'Labels'],
+          ['Accent', '#FF4D2D', 'CTA / charts'],
+        ],
+        light: [
+          ['Background', '#E6E7EC', 'Page canvas'],
+          ['Card', '#F2F3F7', 'Raised surface'],
+          ['Inset', '#D8DAE2', 'Recessed tile'],
+          ['Text', '#1C1C1E', 'Primary copy'],
+          ['Muted', '#6C6C70', 'Labels'],
+          ['Accent', '#FF4D2D', 'CTA / charts'],
+        ],
+      };
+
+      const swatchRoot = document.getElementById('swatches');
+
+      function renderSwatches() {
+        const theme = root.getAttribute('data-theme') || 'dark';
+        swatchRoot.innerHTML = tokenSets[theme]
+          .map(
+            ([name, hex, role]) => `
+          <button type="button" class="swatch" data-hex="${hex}" title="Copy ${hex}">
+            <div class="chip" style="background:${hex}"></div>
+            <div class="meta">
+              <strong>${name}</strong>
+              <code>${hex}</code> · ${role}
+            </div>
+          </button>`,
+          )
+          .join('');
+      }
+
+      renderSwatches();
+      new MutationObserver(renderSwatches).observe(root, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+
+      swatchRoot.addEventListener('click', async (e) => {
+        const btn = e.target.closest('[data-hex]');
+        if (!btn) return;
+        const hex = btn.getAttribute('data-hex');
+        try {
+          await navigator.clipboard.writeText(hex);
+          btn.querySelector('strong').textContent = 'Copied';
+          setTimeout(renderSwatches, 800);
+        } catch (_) {}
+      });
+
+      const notify = document.getElementById('notify-btn');
+      const notifyNote = document.getElementById('notify-note');
+      notify.addEventListener('click', () => {
+        notify.classList.toggle('cleared');
+        notifyNote.textContent = notify.classList.contains('cleared')
+          ? 'Cleared · click again to restore unread'
+          : 'Unread · click bell to clear';
+      });
+
+      document.querySelectorAll('[data-tile]').forEach((tile) => {
+        tile.addEventListener('click', () => {
+          document.querySelectorAll('[data-tile]').forEach((t) => t.classList.remove('is-active'));
+          tile.classList.add('is-active');
+          document.getElementById('tile-note').textContent =
+            'Active: ' + tile.textContent.trim().replace(/\s+/g, ' ');
+        });
+      });
+
+      const levelBtn = document.getElementById('level-btn');
+      levelBtn.addEventListener('click', () => {
+        const next = (Number(levelBtn.textContent) % 5) + 1;
+        levelBtn.textContent = String(next);
+      });
+
+      let pct = 64;
+      const fill = document.getElementById('progress');
+      const pctLabel = document.getElementById('pct-label');
+      function setPct(v) {
+        pct = Math.max(8, Math.min(100, v));
+        fill.style.width = pct + '%';
+        pctLabel.textContent = pct + '%';
+      }
+      document.getElementById('prog-up').addEventListener('click', () => setPct(pct + 8));
+      document.getElementById('prog-down').addEventListener('click', () => setPct(pct - 8));
+    </script>
+  </body>
+</html>
