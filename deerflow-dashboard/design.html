@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deerflow — Design & colour theme</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;600;800&display=swap" rel="stylesheet" />
+    <style>
+      :root,
+      [data-theme='dark'] {
+        --bg: #edd6c0;
+        --card: #141414;
+        --text: #e8e2d8;
+        --muted: #8a847c;
+        --accent: #ff3b12;
+        --chrome: #1a1816;
+        --studio: linear-gradient(180deg, #f3ddc8 0%, #c8b6a6 50%, #7d7d7f 100%);
+        --tile-shadow: 0 20px 36px rgba(40, 28, 22, 0.28);
+        color-scheme: dark;
+      }
+      [data-theme='light'] {
+        --bg: #2a2622;
+        --card: #f4ebe3;
+        --text: #1c1a17;
+        --muted: #6a6460;
+        --accent: #ff3b12;
+        --chrome: #eadfd4;
+        --studio: linear-gradient(180deg, #3d3732 0%, #1c1a18 100%);
+        --tile-shadow: 0 20px 36px rgba(0, 0, 0, 0.38);
+        color-scheme: light;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Doto, ui-monospace, monospace;
+        background: var(--studio);
+        color: var(--chrome);
+        line-height: 1.5;
+        transition: background 0.35s ease, color 0.25s ease;
+      }
+      a { color: var(--accent); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 24px 80px; }
+      header.hero { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: flex-end; margin-bottom: 36px; }
+      .eyebrow { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+      h1 { font-size: clamp(26px, 4vw, 38px); margin: 0 0 8px; letter-spacing: 0.04em; }
+      .lede { max-width: 540px; color: var(--chrome); opacity: 0.72; margin: 0; font-size: 14px; }
+      .theme-switch { display: flex; gap: 4px; padding: 4px; border-radius: 14px; background: var(--card); box-shadow: var(--tile-shadow); }
+      .theme-switch button {
+        border: 0; background: transparent; color: var(--muted); font: inherit; font-size: 12px;
+        padding: 10px 16px; border-radius: 10px; cursor: pointer;
+      }
+      .theme-switch button[aria-pressed='true'] { background: color-mix(in srgb, var(--text) 12%, var(--card)); color: var(--text); }
+      nav.toc { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+      nav.toc a {
+        font-size: 12px; color: var(--text); padding: 8px 12px; border-radius: 999px;
+        background: var(--card); box-shadow: var(--tile-shadow); text-decoration: none;
+      }
+      section { margin-bottom: 52px; }
+      section > h2 { font-size: 20px; margin: 0 0 8px; }
+      .sec-desc { margin: 0 0 18px; opacity: 0.7; max-width: 640px; font-size: 14px; }
+      .card { background: var(--card); color: var(--text); border-radius: 22px; box-shadow: var(--tile-shadow); padding: 22px; }
+      .grid-3 { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+      .swatch { border-radius: 16px; overflow: hidden; box-shadow: var(--tile-shadow); }
+      .swatch .chip { height: 68px; }
+      .swatch .meta { padding: 10px 12px; background: var(--card); color: var(--text); }
+      .swatch .meta strong { display: block; font-size: 13px; }
+      .swatch .meta code { font-size: 11px; color: var(--muted); }
+      .layout {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+      .layout .cell {
+        min-height: 72px;
+        border-radius: 12px;
+        background: var(--card);
+        color: var(--text);
+        padding: 10px;
+        font-size: 11px;
+        box-shadow: var(--tile-shadow);
+      }
+      .layout .cell b { display: block; color: var(--accent); font-size: 10px; letter-spacing: 0.08em; }
+      .chrome-row { display: flex; justify-content: space-between; gap: 12px; margin: 10px 0; font-size: 12px; }
+      .depth { height: 84px; border-radius: 18px; display: grid; place-items: center; cursor: pointer; background: var(--card); color: var(--text); box-shadow: var(--tile-shadow); transition: transform 0.18s ease; }
+      .depth:hover { transform: translateY(-3px); }
+      .depth:active { transform: scale(0.98); }
+      .states { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+      .state { padding: 16px; border-radius: 14px; background: var(--card); color: var(--text); text-align: center; font-size: 12px; }
+      .state.hover { transform: translateY(-2px); box-shadow: var(--tile-shadow); }
+      .state.active { outline: 1px solid var(--accent); }
+      .state.disabled { opacity: 0.4; }
+      .led { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; box-shadow: 0 0 8px var(--accent); animation: pulse 1.8s ease-in-out infinite; }
+      @keyframes pulse { 50% { opacity: 0.4; } }
+      .principles { display: grid; gap: 10px; }
+      .principles li { background: var(--card); color: var(--text); border-radius: 14px; padding: 14px 16px; list-style: none; }
+      ul.principles { padding: 0; margin: 0; }
+      @media (max-width: 640px) { .layout { grid-template-columns: 1fr 1fr; } }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Design and colour theme document</p>
+          <h1>DEERFLOW</h1>
+          <p class="lede">Exact LED type, sampled studio colours, both themes, and the HTML layout of the 3×4 board. Same tokens as the live dashboard.</p>
+        </div>
+        <div class="theme-switch" role="group" aria-label="Colour theme">
+          <button type="button" data-theme-btn="dark" aria-pressed="true">Dark</button>
+          <button type="button" data-theme-btn="light" aria-pressed="false">Light</button>
+        </div>
+      </header>
+
+      <nav class="toc">
+        <a href="#colour">Colour</a>
+        <a href="#type">Type</a>
+        <a href="#layout">HTML layout</a>
+        <a href="#depth">Depth</a>
+        <a href="#states">States</a>
+        <a href="#principles">Principles</a>
+        <a href="/">Open dashboard</a>
+        <a href="/DESIGN.md">DESIGN.md</a>
+      </nav>
+
+      <section id="colour">
+        <h2>Colour theme</h2>
+        <p class="sec-desc">Sampled from the reference. Accent stays <code>#FF3B12</code> in both themes. Click a swatch to copy.</p>
+        <div class="grid-3" id="swatches"></div>
+      </section>
+
+      <section id="type">
+        <h2>Typography</h2>
+        <p class="sec-desc">5×7 circular-dot LED, reconstructed in the app. Doto is the webfont stand-in on this page.</p>
+        <div class="card">
+          <div style="font-size: 28px; letter-spacing: 0.16em;">DEERFLOW</div>
+          <div style="font-size: 16px; letter-spacing: 0.12em; opacity: 0.75; margin-top: 8px;">AIoT DASHBOARD</div>
+          <div style="font-size: 22px; margin-top: 18px;">12.4K &nbsp; 128 &nbsp; 36.6°</div>
+          <div style="font-size: 13px; margin-top: 14px; color: var(--muted);">Labels · STEPS · ONLINE · CONFIDENCE</div>
+        </div>
+      </section>
+
+      <section id="layout">
+        <h2>HTML layout</h2>
+        <p class="sec-desc">Structural map of <code>page &gt; header + main.board + footer</code>. Three columns, four rows, equal tiles.</p>
+        <div class="chrome-row"><span>header · DEERFLOW / AIoT DASHBOARD / All systems operational</span><span>theme chrome</span></div>
+        <div class="layout">
+          <div class="cell"><b>01</b>Agent status · waveform face</div>
+          <div class="cell"><b>02</b>Claude / Codex · 12.4K tokens</div>
+          <div class="cell"><b>03</b>Device overview · gauge 128</div>
+          <div class="cell"><b>04</b>Tesla status · silhouette</div>
+          <div class="cell"><b>05</b>Pharma track · capsule</div>
+          <div class="cell"><b>06</b>Medical monitor · ECG</div>
+          <div class="cell"><b>07</b>Bio sensor · dotted leaf</div>
+          <div class="cell"><b>08</b>Word play · C_DE</div>
+          <div class="cell"><b>09</b>Retail analytics · sparkline</div>
+          <div class="cell"><b>10</b>Entertainment · rings</div>
+          <div class="cell"><b>11</b>Game zone · ship</div>
+          <div class="cell"><b>12</b>Vision AI · cube</div>
+        </div>
+        <div class="chrome-row"><span>footer · BUILD ANYTHING WITH INTELLIGENCE_</span><span>Deerflow by Henryry</span></div>
+      </section>
+
+      <section id="depth">
+        <h2>Depth playground</h2>
+        <p class="sec-desc">Tiles float on the cyclorama. Hover lifts; press scales.</p>
+        <div class="grid-3">
+          <div class="depth">Tile rest / hover</div>
+          <div class="depth" style="outline: 1px solid var(--accent);">Accent edge</div>
+          <div class="depth"><span class="led"></span>&nbsp; LED pulse</div>
+        </div>
+      </section>
+
+      <section id="states">
+        <h2>State matrix</h2>
+        <p class="sec-desc">How chrome and tiles respond.</p>
+        <div class="states">
+          <div class="state">Rest</div>
+          <div class="state hover">Hover</div>
+          <div class="state active">Active</div>
+          <div class="state disabled">Disabled</div>
+        </div>
+      </section>
+
+      <section id="principles">
+        <h2>Principles</h2>
+        <ul class="principles">
+          <li>Copy the exact font — reconstruct the LED grid; do not use Inter.</li>
+          <li>Copy the exact colour theme — cream studio, matte black tiles, #FF3B12 LEDs.</li>
+          <li>Always generate dark mode and light mode; accent and layout stay put.</li>
+          <li>Every design aspect ships: 12 tiles, header, footer, lock, REC, hearts, rings.</li>
+          <li>Always create this design and colour theme document with html layout.</li>
+        </ul>
+      </section>
+    </div>
+    <script>
+      (function () {
+        var KEY = 'deerflow-theme';
+        var root = document.documentElement;
+        function apply(theme) {
+          root.setAttribute('data-theme', theme);
+          try { localStorage.setItem(KEY, theme); } catch (e) {}
+          document.querySelectorAll('[data-theme-btn]').forEach(function (btn) {
+            btn.setAttribute('aria-pressed', btn.getAttribute('data-theme-btn') === theme ? 'true' : 'false');
+          });
+        }
+        var start = 'dark';
+        try { start = localStorage.getItem(KEY) === 'light' ? 'light' : 'dark'; } catch (e) {}
+        apply(start);
+        document.querySelectorAll('[data-theme-btn]').forEach(function (btn) {
+          btn.addEventListener('click', function () { apply(btn.getAttribute('data-theme-btn')); });
+        });
+
+        var dark = [
+          ['Studio top', '#F3DDC8', '#F3DDC8'],
+          ['Studio mid', '#C8B6A6', '#C8B6A6'],
+          ['Tile', '#141414', '#141414'],
+          ['Tile text', '#E8E2D8', '#E8E2D8'],
+          ['Muted', '#8A847C', '#8A847C'],
+          ['Accent / LED', '#FF3B12', '#FF3B12'],
+          ['Chrome ink', '#1A1816', '#1A1816'],
+          ['Light tile', '#F4EBE3', '#F4EBE3']
+        ];
+        var box = document.getElementById('swatches');
+        dark.forEach(function (row) {
+          var el = document.createElement('button');
+          el.className = 'swatch';
+          el.type = 'button';
+          el.innerHTML = '<div class="chip" style="background:' + row[2] + '"></div><div class="meta"><strong>' + row[0] + '</strong><code>' + row[1] + '</code></div>';
+          el.addEventListener('click', function () {
+            navigator.clipboard.writeText(row[1]).then(function () {
+              el.querySelector('code').textContent = 'copied';
+              setTimeout(function () { el.querySelector('code').textContent = row[1]; }, 900);
+            });
+          });
+          box.appendChild(el);
+        });
+      })();
+    </script>
+  </body>
+</html>
