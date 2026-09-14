@@ -56,3 +56,34 @@ npm run dev
 - Orange status LEDs, REC / LIVEVIEW pulse, blinking tagline cursor
 - All 12 instruments: agent face, token bars, device gauge, Tesla, capsule, ECG, leaf, word play, retail spark, rings, ship, vision cube
 - Dual theme with unchanged accent and layout
+
+## Pulsewire Healthcheck (this repo)
+
+| Item | Value |
+|------|-------|
+| Folder | `healthcheck-dashboard/` |
+| Design doc | `healthcheck-dashboard/DESIGN.md` |
+| Design HTML | `healthcheck-dashboard/design.html` |
+| Stack | Vite, React 19, TypeScript, Tailwind 3 |
+| Font | Playfair Display (hero) + Plus Jakarta Sans (UI) — from e-risk DNA |
+| Accent | `#059669` light / `#34d399` dark |
+| Reference theme | Light `#f3f5f8` page, white cards (e-risk) |
+| Dark theme | Ink `#0c1117` page, `#151c26` cards |
+| Depth | Soft e-risk card shadow, 20px radius, −2px hover lift |
+| Layout | Sidebar rail + KPI row + mesh/constellation/latency + incidents/cascade |
+| Theme | `data-theme` + `localStorage` key `pulsewire-theme` |
+
+```bash
+cd healthcheck-dashboard
+npm install
+npm run dev
+```
+
+- Dashboard: http://localhost:5177/
+- Design + HTML layout: http://localhost:5177/design.html
+
+### What was refactored
+
+- Environmental risk board → live healthcheck for Application APIs, GitHub, Cloudflare, Atlassian, Salesforce, MuleSoft
+- Vendor beacon rail, edge mesh map, 45-day status strips, cascade RCA orb
+- Dual theme with shared status vocabulary (ok / warn / crit / info)

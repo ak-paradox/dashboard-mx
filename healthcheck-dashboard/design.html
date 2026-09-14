@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pulsewire · Design System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root,
+      [data-theme='light'] {
+        --dash-bg: #f3f5f8;
+        --dash-card: #ffffff;
+        --dash-text: #111827;
+        --dash-muted: #64748b;
+        --dash-border: #e7ebf0;
+        --dash-accent: #059669;
+        --status-ok: #16a34a;
+        --status-warn: #ea580c;
+        --status-crit: #dc2626;
+        --status-info: #0ea5e9;
+        --shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      }
+      [data-theme='dark'] {
+        --dash-bg: #0c1117;
+        --dash-card: #151c26;
+        --dash-text: #e8eef6;
+        --dash-muted: #8b9bb0;
+        --dash-border: #243041;
+        --dash-accent: #34d399;
+        --status-ok: #22c55e;
+        --status-warn: #fb923c;
+        --status-crit: #f87171;
+        --status-info: #38bdf8;
+        --shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+        background: var(--dash-bg);
+        color: var(--dash-text);
+        line-height: 1.5;
+      }
+      a { color: var(--dash-accent); }
+      .wrap { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+      header { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: end; margin-bottom: 36px; }
+      h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 400; font-size: 40px; margin: 0; letter-spacing: -0.02em; }
+      .sub { color: var(--dash-muted); margin-top: 6px; }
+      .toggle { display: inline-flex; gap: 4px; padding: 4px; border-radius: 12px; background: var(--dash-card); border: 1px solid var(--dash-border); box-shadow: var(--shadow); }
+      .toggle button {
+        border: 0; background: transparent; color: var(--dash-muted); padding: 8px 14px;
+        border-radius: 10px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+      }
+      .toggle button[aria-pressed='true'] { background: var(--dash-bg); color: var(--dash-text); }
+      section { margin-bottom: 40px; }
+      h2 { font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dash-muted); margin: 0 0 14px; }
+      .card {
+        background: var(--dash-card); border: 1px solid var(--dash-border); border-radius: 20px;
+        padding: 20px; box-shadow: var(--shadow);
+      }
+      .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+      .swatch { border-radius: 14px; overflow: hidden; border: 1px solid var(--dash-border); cursor: pointer; }
+      .swatch .chip { height: 64px; }
+      .swatch .meta { padding: 10px 12px; font-size: 12px; }
+      .swatch code { color: var(--dash-muted); font-size: 11px; }
+      .type-row { display: grid; gap: 18px; }
+      .display { font-family: 'Playfair Display', Georgia, serif; font-size: 36px; }
+      .ui { font-size: 14px; font-weight: 600; }
+      .muted { color: var(--dash-muted); font-size: 13px; }
+      .layout {
+        display: grid; grid-template-columns: 56px 1fr; gap: 10px; min-height: 320px;
+      }
+      .rail { background: var(--dash-card); border: 1px dashed var(--dash-border); border-radius: 14px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 12px 0; }
+      .dot { width: 18px; height: 18px; border-radius: 8px; background: var(--dash-border); }
+      .dot.active { background: var(--dash-accent); }
+      .board { display: grid; gap: 8px; }
+      .nav { height: 36px; border-radius: 10px; border: 1px dashed var(--dash-border); background: color-mix(in srgb, var(--dash-card) 80%, transparent); }
+      .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+      .cell { border: 1px dashed var(--dash-border); border-radius: 12px; min-height: 48px; display: grid; place-items: center; font-size: 10px; font-weight: 700; color: var(--dash-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+      .mid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; }
+      .bot { display: grid; grid-template-columns: 7fr 5fr; gap: 8px; }
+      .depth { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .tile {
+        border-radius: 20px; background: var(--dash-card); border: 1px solid var(--dash-border);
+        box-shadow: var(--shadow); padding: 24px; transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .tile:hover { transform: translateY(-2px); }
+      .tile:active { transform: translateY(1px); box-shadow: none; }
+      .states { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+      .state-btn {
+        border-radius: 12px; border: 1px solid var(--dash-border); background: var(--dash-card);
+        padding: 12px; font: inherit; font-size: 12px; font-weight: 600; color: var(--dash-text); cursor: pointer;
+      }
+      .state-btn:hover { background: color-mix(in srgb, var(--dash-accent) 12%, var(--dash-card)); }
+      .state-btn:active { transform: scale(0.98); }
+      .state-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+      .principles { display: grid; gap: 10px; }
+      .principles li { margin-left: 1.1em; color: var(--dash-muted); }
+      .toast {
+        position: fixed; bottom: 20px; right: 20px; background: #1e293b; color: white;
+        padding: 10px 14px; border-radius: 10px; font-size: 12px; opacity: 0; transition: opacity 0.2s;
+        pointer-events: none;
+      }
+      .toast.show { opacity: 1; }
+      @media (max-width: 800px) {
+        .kpis, .mid, .bot, .depth { grid-template-columns: 1fr; }
+        .layout { grid-template-columns: 1fr; }
+        .rail { flex-direction: row; justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div>
+          <h1>Pulsewire design system</h1>
+          <p class="sub">Colour · type · HTML layout · depth · states — shared with the live dashboard.</p>
+          <p class="sub"><a href="/">Open dashboard</a> · <a href="/DESIGN.md">DESIGN.md</a></p>
+        </div>
+        <div class="toggle" role="group" aria-label="Colour theme">
+          <button type="button" id="lightBtn" aria-pressed="true">Light</button>
+          <button type="button" id="darkBtn" aria-pressed="false">Dark</button>
+        </div>
+      </header>
+
+      <section>
+        <h2>Colour tokens</h2>
+        <div class="card swatches" id="swatches"></div>
+      </section>
+
+      <section>
+        <h2>Typography</h2>
+        <div class="card type-row">
+          <div class="display">Healthcheck Status Overview</div>
+          <div class="ui">Plus Jakarta Sans · 600 — KPI labels, filters, incident titles</div>
+          <div class="muted">Playfair Display for the hero only. UI never falls back to Inter as the brand voice.</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>HTML layout map</h2>
+        <div class="card layout" aria-label="Annotated board structure">
+          <div class="rail" title="Sidebar rail">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+          <div class="board">
+            <div class="cell nav">Top navbar · search · filters · theme</div>
+            <div class="cell">Header + VendorBeaconRail</div>
+            <div class="kpis">
+              <div class="cell">Health</div>
+              <div class="cell">API %</div>
+              <div class="cell">Incidents</div>
+              <div class="cell">Surfaces</div>
+            </div>
+            <div class="mid">
+              <div class="cell" style="min-height:88px">Edge Mesh Map</div>
+              <div class="cell" style="min-height:88px">Constellation</div>
+              <div class="cell" style="min-height:88px">Latency</div>
+            </div>
+            <div class="bot">
+              <div class="cell" style="min-height:72px">Incident feed + 45d strips</div>
+              <div class="cell" style="min-height:72px">Cascade orb</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Depth playground</h2>
+        <div class="depth">
+          <div class="tile">Rest card — soft e-risk shadow</div>
+          <div class="tile">Hover lifts −2px</div>
+          <div class="tile">Press flattens</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>State matrix</h2>
+        <div class="card states">
+          <button class="state-btn" type="button">Rest</button>
+          <button class="state-btn" type="button">Hover me</button>
+          <button class="state-btn" type="button">Active</button>
+          <button class="state-btn" type="button" disabled>Disabled</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Principles</h2>
+        <div class="card">
+          <ul class="principles">
+            <li>Accent = healthy pulse (emerald) — never purple chrome.</li>
+            <li>Status colours are the only loud signal; cards stay quiet.</li>
+            <li>Depth = affordance: hover lifts, press sinks.</li>
+            <li>Both themes preserve motif, radii, and Playfair hero.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast">Copied</div>
+
+    <script>
+      const tokens = [
+        ['Page', '--dash-bg'],
+        ['Card', '--dash-card'],
+        ['Text', '--dash-text'],
+        ['Muted', '--dash-muted'],
+        ['Border', '--dash-border'],
+        ['Accent', '--dash-accent'],
+        ['OK', '--status-ok'],
+        ['Warn', '--status-warn'],
+        ['Crit', '--status-crit'],
+        ['Info', '--status-info'],
+      ]
+
+      const root = document.documentElement
+      const swatches = document.getElementById('swatches')
+      const toast = document.getElementById('toast')
+
+      function hexOf(varName) {
+        const probe = document.createElement('div')
+        probe.style.color = `var(${varName})`
+        document.body.appendChild(probe)
+        const rgb = getComputedStyle(probe).color
+        probe.remove()
+        const m = rgb.match(/\d+/g)
+        if (!m) return varName
+        return '#' + m.slice(0, 3).map((n) => Number(n).toString(16).padStart(2, '0')).join('')
+      }
+
+      function renderSwatches() {
+        swatches.innerHTML = ''
+        tokens.forEach(([label, cssVar]) => {
+          const hex = hexOf(cssVar)
+          const el = document.createElement('button')
+          el.type = 'button'
+          el.className = 'swatch'
+          el.innerHTML = `<div class="chip" style="background:var(${cssVar})"></div><div class="meta"><strong>${label}</strong><br/><code>${hex}</code></div>`
+          el.addEventListener('click', async () => {
+            try { await navigator.clipboard.writeText(hex) } catch {}
+            toast.textContent = `Copied ${hex}`
+            toast.classList.add('show')
+            setTimeout(() => toast.classList.remove('show'), 1200)
+          })
+          swatches.appendChild(el)
+        })
+      }
+
+      function setTheme(theme) {
+        root.setAttribute('data-theme', theme)
+        localStorage.setItem('pulsewire-theme', theme)
+        document.getElementById('lightBtn').setAttribute('aria-pressed', String(theme === 'light'))
+        document.getElementById('darkBtn').setAttribute('aria-pressed', String(theme === 'dark'))
+        renderSwatches()
+      }
+
+      document.getElementById('lightBtn').onclick = () => setTheme('light')
+      document.getElementById('darkBtn').onclick = () => setTheme('dark')
+
+      const stored = localStorage.getItem('pulsewire-theme')
+      setTheme(stored === 'dark' ? 'dark' : 'light')
+    </script>
+  </body>
+</html>
