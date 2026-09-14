@@ -36,6 +36,16 @@ The **default** `data-theme` is the reference (often dark tiles). Always also sh
 - Flip page/card/text luminance and shadow polarity.
 - If the reference is already dark-on-light (black tiles on a cream studio), default is that look; light mode inverts tiles to cream/ink while preserving orange LEDs and the same layout.
 
+## Domain refactor (same visual DNA, new product)
+
+When the user asks to use an existing dashboard as a **base** and rebuild for a new domain (e.g. e-risk → healthcheck):
+
+1. Still create a **new folder** — never edit the source board in place.
+2. Keep exact fonts, radii, card chrome, and grid rhythm from the base.
+3. Refactor every widget’s copy, data, and metaphors to the new domain (do not leave orphan risk/env labels).
+4. Still ship dual themes, `DESIGN.md`, and `design.html` with an HTML layout map.
+5. Document the lineage (“from e-risk DNA”) in `DESIGN.md` Brand / Run sections.
+
 ## Layout patterns seen in the wild
 
 | Pattern | Notes |
